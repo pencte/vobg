@@ -141,7 +141,7 @@ const GrowtopiaLogin: React.FC = () => {
                     <div className="row" style={{ margin: 0 }}>
                       <div className="col-md-12 col-sm-12" style={{ padding: 0 }}>
                         <div className="section-title center-align" style={{ marginBottom: 10 }}>
-                          <h2 style={{ margin: 0, fontSize: 22 }}>Welcome To GTPS</h2>
+                          <h2 style={{ margin: 0, fontSize: 22 }}>Welcome To TerorismePS</h2>
                         </div>
 
                         <div className="row div-content-center" style={{ margin: 0 }}>
@@ -164,7 +164,7 @@ const GrowtopiaLogin: React.FC = () => {
                                 <input
                                   id="login-name"
                                   className="form-control grow-text"
-                                  placeholder="Your GTPS Name *"
+                                  placeholder="Your TerorismePS Name *"
                                   name="growId"
                                   type="text"
                                   value={growId}
@@ -177,7 +177,7 @@ const GrowtopiaLogin: React.FC = () => {
                                 <input
                                   id="password"
                                   className="form-control grow-text"
-                                  placeholder="Your GTPS Password *"
+                                  placeholder="Your TerorismePS Password *"
                                   name="password"
                                   type="password"
                                   value={password}
