@@ -60,6 +60,13 @@ const GrowtopiaLogin: React.FC = () => {
 
     const style = document.createElement("style");
     style.innerHTML = `
+    html, body {
+  background: transparent !important;
+}
+
+.modal {
+  background: transparent !important;
+}
       body {
         font-family: 'Segoe UI', sans-serif;
       }
