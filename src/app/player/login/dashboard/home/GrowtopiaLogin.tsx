@@ -163,11 +163,6 @@ const GrowtopiaLogin: React.FC = () => {
           font-size: 18px !important;
         }
       }
-      @media (max-width: 600px) {
-  .form-row {
-    flex-direction: column !important;
-  }
-}
     `;
     document.head.appendChild(style);
 
@@ -236,7 +231,7 @@ const GrowtopiaLogin: React.FC = () => {
           className="modal-dialog modal-dialog-centered"
           role="document"
           style={{
-            maxWidth: 800,
+            maxWidth: 420,
             width: "92vw",
             margin: "0 auto",
           }}
@@ -266,46 +261,36 @@ const GrowtopiaLogin: React.FC = () => {
                             >
                               <input name="_token" type="hidden" value={token} />
 
-                              <div className="form-row" style={{ display: "flex", gap: 15 }}>
+                              <label className="label-text">GrowID:</label>
+                              <div className="form-group">
+                                <input
+                                  className="form-control grow-text"
+                                  placeholder="Your TerorismePS Name *"
+                                  name="growId"
+                                  type="text"
+                                  value={growId}
+                                  onChange={(e) => setGrowId(e.target.value)}
+                                />
+                              </div>
 
-  {/* KIRI */}
-  <div style={{ flex: 1 }}>
-    <label className="label-text">GrowID:</label>
-    <div className="form-group">
-      <input
-        className="form-control grow-text"
-        placeholder="Your TerorismePS Name *"
-        name="growId"
-        type="text"
-        value={growId}
-        onChange={(e) => setGrowId(e.target.value)}
-      />
-    </div>
-  </div>
+                              <label className="label-text">Password:</label>
+                              <div className="form-group password-wrapper">
+                                <input
+                                  className="form-control grow-text"
+                                  placeholder="Your TerorismePS Password *"
+                                  name="password"
+                                  type={showPassword ? "text" : "password"}
+                                  value={password}
+                                  onChange={(e) => setPassword(e.target.value)}
+                                />
 
-  {/* KANAN */}
-  <div style={{ flex: 1 }}>
-    <label className="label-text">Password:</label>
-    <div className="form-group password-wrapper">
-      <input
-        className="form-control grow-text"
-        placeholder="Your TerorismePS Password *"
-        name="password"
-        type={showPassword ? "text" : "password"}
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-
-      <span
-        className="toggle-eye"
-        onClick={() => setShowPassword(!showPassword)}
-      >
-        {showPassword ? "🙈" : "👁️"}
-      </span>
-    </div>
-  </div>
-
-</div>
+                                <span
+                                  className="toggle-eye"
+                                  onClick={() => setShowPassword(!showPassword)}
+                                >
+                                  {showPassword ? "🙈" : "👁️"}
+                                </span>
+                              </div>
                             </form>
 
                             <div
