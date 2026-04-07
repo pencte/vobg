@@ -57,19 +57,95 @@ const GrowtopiaLogin: React.FC = () => {
       "https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/assets/css/ingame-custom.css"
     );
 
+    // 🔥 TAMBAHAN STYLE MODERN
+    const style = document.createElement("style");
+    style.innerHTML = `
+      body {
+        font-family: 'Segoe UI', sans-serif;
+      }
+
+      .modal-content {
+        border-radius: 16px;
+        backdrop-filter: blur(20px);
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.15);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      }
+
+      h2 {
+        font-weight: 600;
+        color: #fff;
+      }
+
+      .form-control {
+        border-radius: 10px;
+        border: 1px solid rgba(255,255,255,0.2);
+        background: rgba(255,255,255,0.08);
+        color: #fff;
+        transition: 0.2s;
+      }
+
+      .form-control::placeholder {
+        color: rgba(255,255,255,0.6);
+      }
+
+      .form-control:focus {
+        border-color: #4da6ff;
+        box-shadow: 0 0 0 2px rgba(77,166,255,0.3);
+        background: rgba(255,255,255,0.12);
+      }
+
+      .btn {
+        border-radius: 10px;
+        transition: 0.2s;
+        font-weight: 500;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #4da6ff, #0066ff);
+        border: none;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(0,102,255,0.4);
+      }
+
+      .btn-secondary {
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+        color: #fff;
+      }
+
+      .btn-secondary:hover {
+        background: rgba(255,255,255,0.2);
+      }
+
+      .modal {
+        backdrop-filter: blur(6px);
+      }
+
+      @media (max-width: 480px) {
+        .modal-dialog {
+          width: 95vw !important;
+        }
+
+        h2 {
+          font-size: 18px !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+
     const prevBodyOverflow = document.body.style.overflow;
     const prevBodyHeight = document.body.style.height;
     const prevHtmlOverflow = document.documentElement.style.overflow;
     const prevHtmlHeight = document.documentElement.style.height;
-    const prevBodyBg = document.body.style.backgroundColor;
-    const prevHtmlBg = document.documentElement.style.backgroundColor;
 
     document.body.style.overflow = "hidden";
     document.documentElement.style.overflow = "hidden";
     document.body.style.height = "100%";
     document.documentElement.style.height = "100%";
-    document.body.style.backgroundColor = "transparent";
-    document.documentElement.style.backgroundColor = "transparent";
 
     const keyHandler = (e: KeyboardEvent) => {
       const key = e.key.toLowerCase();
@@ -91,8 +167,6 @@ const GrowtopiaLogin: React.FC = () => {
       document.documentElement.style.overflow = prevHtmlOverflow;
       document.body.style.height = prevBodyHeight;
       document.documentElement.style.height = prevHtmlHeight;
-      document.body.style.backgroundColor = prevBodyBg;
-      document.documentElement.style.backgroundColor = prevHtmlBg;
     };
   }, []);
 
@@ -121,7 +195,7 @@ const GrowtopiaLogin: React.FC = () => {
           inset: 0,
           position: "fixed",
           overflow: "hidden",
-          background: "rgba(0,0,0,0.25)",
+          background: "linear-gradient(135deg,#0f2027,#203a43,#2c5364)",
         }}
       >
         <div
@@ -134,20 +208,19 @@ const GrowtopiaLogin: React.FC = () => {
           }}
         >
           <div className="modal-content">
-            <div className="modal-body" style={{ padding: 16 }}>
+            <div className="modal-body" style={{ padding: 20 }}>
               <div className="content">
                 <section className="common-box" style={{ padding: 0 }}>
                   <div className="container" style={{ width: "100%", padding: 0 }}>
                     <div className="row" style={{ margin: 0 }}>
                       <div className="col-md-12 col-sm-12" style={{ padding: 0 }}>
-                        <div className="section-title center-align" style={{ marginBottom: 10 }}>
-                          <h2 style={{ margin: 0, fontSize: 22 }}>Welcome To TerorismePS</h2>
+                        <div className="section-title center-align" style={{ marginBottom: 15 }}>
+                          <h2>Welcome To TerorismePS</h2>
                         </div>
 
                         <div className="row div-content-center" style={{ margin: 0 }}>
                           <div className="col-md-12 col-sm-12" style={{ padding: 0 }}>
 
-                            {/* INPUT LOGIN */}
                             <form
                               ref={loginFormRef}
                               method="POST"
@@ -156,38 +229,32 @@ const GrowtopiaLogin: React.FC = () => {
                               role="form"
                               autoComplete="off"
                               onSubmit={handleLoginSubmit}
-                              style={{ marginBottom: 0 }}
                             >
                               <input name="_token" type="hidden" value={token} />
 
-                              <div className="form-group" style={{ marginBottom: 10 }}>
+                              <div className="form-group">
                                 <input
-                                  id="login-name"
                                   className="form-control grow-text"
                                   placeholder="Your TerorismePS Name *"
                                   name="growId"
                                   type="text"
                                   value={growId}
                                   onChange={(e) => setGrowId(e.target.value)}
-                                  style={{ height: 42 }}
                                 />
                               </div>
 
-                              <div className="form-group" style={{ marginBottom: 12 }}>
+                              <div className="form-group">
                                 <input
-                                  id="password"
                                   className="form-control grow-text"
                                   placeholder="Your TerorismePS Password *"
                                   name="password"
                                   type="password"
                                   value={password}
                                   onChange={(e) => setPassword(e.target.value)}
-                                  style={{ height: 42 }}
                                 />
                               </div>
                             </form>
 
-                            {/* TOMBOL KIRI KANAN */}
                             <div
                               className="form-group"
                               style={{
@@ -196,7 +263,6 @@ const GrowtopiaLogin: React.FC = () => {
                                 marginTop: 10,
                               }}
                             >
-                              {/* REGISTER */}
                               <form
                                 ref={guestFormRef}
                                 method="POST"
@@ -215,26 +281,17 @@ const GrowtopiaLogin: React.FC = () => {
                                   className="btn btn-secondary grow-button"
                                   type="submit"
                                   value="Register"
-                                  style={{
-                                    width: "100%",
-                                    height: 42,
-                                    fontSize: 14,
-                                  }}
+                                  style={{ width: "100%", height: 42 }}
                                 />
                               </form>
 
-                              {/* LOGIN */}
                               <button
                                 onClick={(e) => {
                                   e.preventDefault();
                                   loginFormRef.current?.requestSubmit();
                                 }}
                                 className="btn btn-primary grow-button"
-                                style={{
-                                  flex: 1,
-                                  height: 42,
-                                  fontSize: 14,
-                                }}
+                                style={{ flex: 1, height: 42 }}
                               >
                                 Login
                               </button>
