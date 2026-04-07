@@ -10,6 +10,7 @@ const GrowtopiaLogin: React.FC = () => {
 
   const [growId, setGrowId] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // ✅ tambahan
 
   const token = useMemo(() => searchParams.get("data") || "", [searchParams]);
 
@@ -124,6 +125,28 @@ const GrowtopiaLogin: React.FC = () => {
         backdrop-filter: blur(6px);
       }
 
+      /* ✅ tambahan */
+      .label-text {
+        color: rgba(255,255,255,0.8);
+        font-size: 13px;
+        margin-bottom: 4px;
+        display: block;
+      }
+
+      .password-wrapper {
+        position: relative;
+      }
+
+      .toggle-eye {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 16px;
+        color: rgba(255,255,255,0.6);
+      }
+
       @media (max-width: 480px) {
         .modal-dialog {
           width: 95vw !important;
@@ -231,6 +254,7 @@ const GrowtopiaLogin: React.FC = () => {
                             >
                               <input name="_token" type="hidden" value={token} />
 
+                              <label className="label-text">GrowID:</label>
                               <div className="form-group">
                                 <input
                                   className="form-control grow-text"
@@ -242,15 +266,23 @@ const GrowtopiaLogin: React.FC = () => {
                                 />
                               </div>
 
-                              <div className="form-group">
+                              <label className="label-text">Password:</label>
+                              <div className="form-group password-wrapper">
                                 <input
                                   className="form-control grow-text"
                                   placeholder="Your TerorismePS Password *"
                                   name="password"
-                                  type="password"
+                                  type={showPassword ? "text" : "password"}
                                   value={password}
                                   onChange={(e) => setPassword(e.target.value)}
                                 />
+
+                                <span
+                                  className="toggle-eye"
+                                  onClick={() => setShowPassword(!showPassword)}
+                                >
+                                  {showPassword ? "🙈" : "👁️"}
+                                </span>
                               </div>
                             </form>
 
