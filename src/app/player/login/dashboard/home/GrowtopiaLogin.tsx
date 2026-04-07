@@ -163,6 +163,11 @@ const GrowtopiaLogin: React.FC = () => {
           font-size: 18px !important;
         }
       }
+      @media (max-width: 600px) {
+  .form-row {
+    flex-direction: column !important;
+  }
+}
     `;
     document.head.appendChild(style);
 
@@ -261,7 +266,7 @@ const GrowtopiaLogin: React.FC = () => {
                             >
                               <input name="_token" type="hidden" value={token} />
 
-                              <div style={{ display: "flex", gap: 15 }}>
+                              <div className="form-row" style={{ display: "flex", gap: 15 }}>
 
   {/* KIRI */}
   <div style={{ flex: 1 }}>
