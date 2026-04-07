@@ -57,7 +57,6 @@ const GrowtopiaLogin: React.FC = () => {
       "https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/assets/css/ingame-custom.css"
     );
 
-    // 🔥 TAMBAHAN STYLE MODERN
     const style = document.createElement("style");
     style.innerHTML = `
       body {
@@ -295,6 +294,33 @@ const GrowtopiaLogin: React.FC = () => {
                               >
                                 Login
                               </button>
+                            </div>
+
+                            {/* DISCORD + CREDIT */}
+                            <div style={{ marginTop: 15, textAlign: "center" }}>
+                              <a
+                                href="https://discord.gg/vaFUAhDfUH"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                  display: "block",
+                                  color: "#4da6ff",
+                                  textDecoration: "none",
+                                  fontSize: 14,
+                                  marginBottom: 5,
+                                }}
+                              >
+                                Join our Discord 🚀
+                              </a>
+
+                              <div
+                                style={{
+                                  fontSize: 12,
+                                  color: "rgba(255,255,255,0.5)",
+                                }}
+                              >
+                                by Test
+                              </div>
                             </div>
 
                           </div>
