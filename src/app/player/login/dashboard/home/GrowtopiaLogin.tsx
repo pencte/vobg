@@ -242,7 +242,7 @@ document.documentElement.style.overflowX = "hidden";
                     <div className="row" style={{ margin: 0 }}>
                       <div className="col-md-12 col-sm-12" style={{ padding: 0 }}>
                         <div className="section-title center-align" style={{ marginBottom: 15 }}>
-                          <h2>Welcome To TerorismePS</h2>
+                          <h2>TerorismePS</h2>
                         </div>
 
                         <div className="row div-content-center" style={{ margin: 0 }}>
