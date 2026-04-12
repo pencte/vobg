@@ -171,10 +171,8 @@ const GrowtopiaLogin: React.FC = () => {
     const prevHtmlOverflow = document.documentElement.style.overflow;
     const prevHtmlHeight = document.documentElement.style.height;
 
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
-    document.body.style.height = "100%";
-    document.documentElement.style.height = "100%";
+    document.body.style.overflowX = "hidden";
+document.documentElement.style.overflowX = "hidden";
 
     const keyHandler = (e: KeyboardEvent) => {
       const key = e.key.toLowerCase();
