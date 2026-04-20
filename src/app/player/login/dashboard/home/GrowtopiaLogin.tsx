@@ -8,117 +8,193 @@ const GrowtopiaLogin: React.FC = () => {
   const loginFormRef = useRef<HTMLFormElement>(null);
   const guestFormRef = useRef<HTMLFormElement>(null);
 
-  const [screen, setScreen] = useState<"menu" | "growid">("menu");
-
   const [growId, setGrowId] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // ✅ tambahan
 
   const token = useMemo(() => searchParams.get("data") || "", [searchParams]);
 
   useEffect(() => {
     setGrowId(localStorage.getItem("growId") || "");
+  }, []);
+
+  useEffect(() => {
+    document.title = "Growtopia Player Support";
+
+    const setFavicon = (href: string) => {
+      const setIcon = (rel: string) => {
+        let link = document.querySelector(`link[rel='${rel}']`) as HTMLLinkElement | null;
+        if (!link) {
+          link = document.createElement("link");
+          link.rel = rel;
+          document.head.appendChild(link);
+        }
+        link.href = href;
+      };
+      setIcon("icon");
+      setIcon("shortcut icon");
+    };
+
+    const loadCSS = (href: string) => {
+      if (!document.querySelector(`link[href="${href}"]`)) {
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = href;
+        document.head.appendChild(link);
+      }
+    };
+
+    setFavicon(
+      "https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/assets/images/growtopia.ico"
+    );
+
+    loadCSS(
+      "https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/assets/css/faq-main.css"
+    );
+    loadCSS(
+      "https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/assets/css/shop-custom.css"
+    );
+    loadCSS(
+      "https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/assets/css/ingame-custom.css"
+    );
 
     const style = document.createElement("style");
     style.innerHTML = `
+    html, body {
+  background: transparent !important;
+}
+
+.modal {
+  background: transparent !important;
+}
       body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: linear-gradient(180deg, #0b1220, #111827);
+        font-family: 'Segoe UI', sans-serif;
       }
 
-      .wrap {
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      .modal-content {
+        border-radius: 16px;
+        backdrop-filter: blur(20px);
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.15);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.4);
       }
 
-      .card {
-        width: 360px;
-        background: #111827;
-        border: 1px solid #1f2937;
-        border-radius: 14px;
-        padding: 22px;
-        color: white;
+      h2 {
+        font-weight: 600;
+        color: #fff;
       }
 
-      .title {
-        text-align: center;
-        font-size: 22px;
-        font-weight: 700;
-        margin-bottom: 18px;
+      .form-control {
+        border-radius: 10px;
+        border: 1px solid rgba(255,255,255,0.2);
+        background: rgba(255,255,255,0.08);
+        color: #fff;
+        transition: 0.2s;
+      }
+
+      .form-control::placeholder {
+        color: rgba(255,255,255,0.6);
+      }
+
+      .form-control:focus {
+        border-color: #4da6ff;
+        box-shadow: 0 0 0 2px rgba(77,166,255,0.3);
+        background: rgba(255,255,255,0.12);
       }
 
       .btn {
-        width: 100%;
-        padding: 12px;
         border-radius: 10px;
+        transition: 0.2s;
+        font-weight: 500;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #4da6ff, #0066ff);
         border: none;
-        font-weight: 700;
-        cursor: pointer;
-        margin-top: 10px;
       }
 
-      .google {
-        background: white;
-        color: black;
+      .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(0,102,255,0.4);
       }
 
-      .growid {
-        background: #22c55e;
-        color: black;
+      .btn-secondary {
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+        color: #fff;
       }
 
-      .back {
-        background: transparent;
-        border: 1px solid #374151;
-        color: white;
+      .btn-secondary:hover {
+        background: rgba(255,255,255,0.2);
       }
 
-      .label {
-        font-size: 12px;
-        color: #9ca3af;
-        margin: 8px 0 4px;
+      .modal {
+        backdrop-filter: blur(6px);
+      }
+
+      /* ✅ tambahan */
+      .label-text {
+        color: rgba(255,255,255,0.8);
+        font-size: 13px;
+        margin-bottom: 4px;
         display: block;
       }
 
-      .input {
-        width: 100%;
-        padding: 10px;
-        border-radius: 8px;
-        border: 1px solid #374151;
-        background: #0b1220;
-        color: white;
-        outline: none;
-      }
-
-      .input:focus {
-        border-color: #3b82f6;
-      }
-
-      .pass-wrap {
+      .password-wrapper {
         position: relative;
       }
 
-      .eye {
+      .toggle-eye {
         position: absolute;
-        right: 10px;
-        top: 10px;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
         cursor: pointer;
-        color: #9ca3af;
+        font-size: 16px;
+        color: rgba(255,255,255,0.6);
       }
 
-      .row {
-        display: flex;
-        gap: 10px;
-        margin-top: 12px;
-      }
+      @media (max-width: 480px) {
+        .modal-dialog {
+          width: 95vw !important;
+        }
 
+        h2 {
+          font-size: 18px !important;
+        }
+      }
     `;
     document.head.appendChild(style);
 
-    return () => {};
+    const prevBodyOverflow = document.body.style.overflow;
+    const prevBodyHeight = document.body.style.height;
+    const prevHtmlOverflow = document.documentElement.style.overflow;
+    const prevHtmlHeight = document.documentElement.style.height;
+
+    document.body.style.overflowX = "hidden";
+document.documentElement.style.overflowX = "hidden";
+
+    const keyHandler = (e: KeyboardEvent) => {
+      const key = e.key.toLowerCase();
+      if (
+        key === "f12" ||
+        e.keyCode === 123 ||
+        (e.ctrlKey && e.shiftKey && ["i", "c", "j"].includes(key)) ||
+        (e.ctrlKey && key === "u")
+      ) {
+        e.preventDefault();
+      }
+    };
+
+    document.addEventListener("keydown", keyHandler);
+
+    return () => {
+      document.removeEventListener("keydown", keyHandler);
+      document.body.style.overflow = prevBodyOverflow;
+      document.documentElement.style.overflow = prevHtmlOverflow;
+      document.body.style.height = prevBodyHeight;
+      document.documentElement.style.height = prevHtmlHeight;
+    };
   }, []);
 
   const handleLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -136,78 +212,166 @@ const GrowtopiaLogin: React.FC = () => {
   };
 
   return (
-    <div className="wrap">
-      <div className="card">
+    <>
+      <button type="button" className="btn btn-primary hidden" style={{ display: "none" }} />
 
-        {/* ================= MENU ================= */}
-        {screen === "menu" && (
-          <>
-            <div className="title">TerorismePS</div>
+      <div
+        className="modal fade product-list-popup in"
+        style={{
+          display: "block",
+          inset: 0,
+          position: "fixed",
+          overflow: "hidden",
+          background: "transparent",
+        }}
+      >
+        <div
+          className="modal-dialog modal-dialog-centered"
+          role="document"
+          style={{
+            maxWidth: 420,
+            width: "92vw",
+            margin: "0 auto",
+          }}
+        >
+          <div className="modal-content">
+            <div className="modal-body" style={{ padding: 20 }}>
+              <div className="content">
+                <section className="common-box" style={{ padding: 0 }}>
+                  <div className="container" style={{ width: "100%", padding: 0 }}>
+                    <div className="row" style={{ margin: 0 }}>
+                      <div className="col-md-12 col-sm-12" style={{ padding: 0 }}>
+                        <div className="section-title center-align" style={{ marginBottom: 15 }}>
+                          <h2>TerorismePS</h2>
+                        </div>
 
-            <button className="btn google">
-              Login Google
-            </button>
+                        <div className="row div-content-center" style={{ margin: 0 }}>
+                          <div className="col-md-12 col-sm-12" style={{ padding: 0 }}>
 
-            <button
-              className="btn growid"
-              onClick={() => setScreen("growid")}
-            >
-              Login GrowID
-            </button>
-          </>
-        )}
+                            <form
+                              ref={loginFormRef}
+                              method="POST"
+                              action="/player/growid/login/validate"
+                              acceptCharset="UTF-8"
+                              role="form"
+                              autoComplete="off"
+                              onSubmit={handleLoginSubmit}
+                            >
+                              <input name="_token" type="hidden" value={token} />
 
-        {/* ================= GROWID LOGIN ================= */}
-        {screen === "growid" && (
-          <>
-            <div className="title">Login GrowID</div>
+                              <label className="label-text">GrowID:</label>
+                              <div className="form-group">
+                                <input
+                                  className="form-control grow-text"
+                                  placeholder="Your TerorismePS Name *"
+                                  name="growId"
+                                  type="text"
+                                  value={growId}
+                                  onChange={(e) => setGrowId(e.target.value)}
+                                />
+                              </div>
 
-            <form ref={loginFormRef} onSubmit={handleLoginSubmit}>
-              <input name="_token" type="hidden" value={token} />
+                              <label className="label-text">Password:</label>
+                              <div className="form-group password-wrapper">
+                                <input
+                                  className="form-control grow-text"
+                                  placeholder="Your TerorismePS Password *"
+                                  name="password"
+                                  type={showPassword ? "text" : "password"}
+                                  value={password}
+                                  onChange={(e) => setPassword(e.target.value)}
+                                />
 
-              <label className="label">GrowID</label>
-              <input
-                className="input"
-                value={growId}
-                onChange={(e) => setGrowId(e.target.value)}
-                placeholder="Enter GrowID"
-              />
+                                <span
+                                  className="toggle-eye"
+                                  onClick={() => setShowPassword(!showPassword)}
+                                >
+                                  {showPassword ? "🙈" : "👁️"}
+                                </span>
+                              </div>
+                            </form>
 
-              <label className="label">Password</label>
-              <div className="pass-wrap">
-                <input
-                  className="input"
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Password"
-                />
-                <span className="eye" onClick={() => setShowPassword(!showPassword)}>
-                  👁
-                </span>
+                            <div
+                              className="form-group"
+                              style={{
+                                display: "flex",
+                                gap: 10,
+                                marginTop: 10,
+                              }}
+                            >
+                              <form
+                                ref={guestFormRef}
+                                method="POST"
+                                action="/player/growid/login/validate"
+                                acceptCharset="UTF-8"
+                                role="form"
+                                autoComplete="off"
+                                onSubmit={handleGuestSubmit}
+                                style={{ flex: 1 }}
+                              >
+                                <input name="_token" type="hidden" value={token} />
+                                <input name="growId" type="hidden" value="" />
+                                <input name="password" type="hidden" value="" />
+
+                                <input
+                                  className="btn btn-secondary grow-button"
+                                  type="submit"
+                                  value="Register"
+                                  style={{ width: "100%", height: 42 }}
+                                />
+                              </form>
+
+                              <button
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  loginFormRef.current?.requestSubmit();
+                                }}
+                                className="btn btn-primary grow-button"
+                                style={{ flex: 1, height: 42 }}
+                              >
+                                Login
+                              </button>
+                            </div>
+
+                            {/* DISCORD + CREDIT */}
+                            <div style={{ marginTop: 15, textAlign: "center" }}>
+                              <a
+                                href="https://discord.gg/vaFUAhDfUH"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                  display: "block",
+                                  color: "#4da6ff",
+                                  textDecoration: "none",
+                                  fontSize: 14,
+                                  marginBottom: 5,
+                                }}
+                              >
+                                Join our Discord 🚀
+                              </a>
+
+                              <div
+                                style={{
+                                  fontSize: 12,
+                                  color: "rgba(255,255,255,0.5)",
+                                }}
+                              >
+                                by Test
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
               </div>
-            </form>
-
-            <div className="row">
-              <button
-                className="btn back"
-                onClick={() => setScreen("menu")}
-              >
-                Back
-              </button>
-
-              <button
-                className="btn growid"
-                onClick={() => loginFormRef.current?.requestSubmit()}
-              >
-                Login
-              </button>
             </div>
-          </>
-        )}
-
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
