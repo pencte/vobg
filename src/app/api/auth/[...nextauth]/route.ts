@@ -3,7 +3,12 @@ import GoogleProvider from "next-auth/providers/google";
 import { supabase } from "@/lib/supabase";
 
 function generateGrowID(email: string) {
-  return "GT_" + email.split("@")[0] + "_" + Math.floor(Math.random() * 9999);
+  return (
+    "GT_" +
+    email.split("@")[0] +
+    "_" +
+    Math.floor(Math.random() * 9999)
+  );
 }
 
 const handler = NextAuth({
@@ -19,9 +24,12 @@ const handler = NextAuth({
   },
 
   callbacks: {
+    // 🔥 LOGIN + AUTO REGISTER (GTPS LOGIC)
     async signIn({ user, account }) {
       const googleId = account?.providerAccountId;
       const email = user.email;
+
+      if (!googleId) return false;
 
       // cek user di supabase
       const { data: existing } = await supabase
@@ -30,9 +38,10 @@ const handler = NextAuth({
         .eq("google_id", googleId)
         .single();
 
-      let growId = "";
+      let growId: string;
 
       if (!existing) {
+        // 🟢 AUTO REGISTER (SAMA KAYA REGISTER BUTTON)
         growId = generateGrowID(email || "");
 
         await supabase.from("users").insert([
@@ -43,6 +52,7 @@ const handler = NextAuth({
           },
         ]);
       } else {
+        // 🔵 AUTO LOGIN
         growId = existing.grow_id;
       }
 
@@ -51,18 +61,21 @@ const handler = NextAuth({
       return true;
     },
 
+    // 🔐 SIMPAN KE JWT TOKEN
     async jwt({ token, user }) {
-      if (user?.growId) {
+      if (user) {
         token.growId = (user as any).growId;
       }
       return token;
     },
 
+    // 📦 KIRIM KE FRONTEND
     async session({ session, token }) {
       (session.user as any).growId = token.growId;
       return session;
     },
 
+    // 🚀 REDIRECT SETELAH LOGIN
     async redirect() {
       return "/player/growid/login/dashboard";
     },
