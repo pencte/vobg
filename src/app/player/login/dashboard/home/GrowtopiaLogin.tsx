@@ -332,7 +332,7 @@ document.documentElement.style.overflowX = "hidden";
                               >
                                 Login
                               </button>
-                              //<button
+  //<button
   //type="button"
   //className="btn btn-primary grow-button"
   //style={{
@@ -352,7 +352,7 @@ document.documentElement.style.overflowX = "hidden";
   //<img
     //src="https://www.svgrepo.com/show/475656/google-color.svg"
     //style={{ width: 18, height: 18 }}
-  ///>
+  //>
   //Login with Google
 //</button>
                             </div>
