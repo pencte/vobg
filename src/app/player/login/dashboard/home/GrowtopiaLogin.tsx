@@ -1,5 +1,6 @@
 "use client";
 
+import { signIn } from "next-auth/react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -331,6 +332,29 @@ document.documentElement.style.overflowX = "hidden";
                               >
                                 Login
                               </button>
+                              <button
+  type="button"
+  className="btn btn-primary grow-button"
+  style={{
+    width: "100%",
+    height: 42,
+    marginTop: 10,
+    background: "#fff",
+    color: "#000",
+    fontWeight: 700,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+  }}
+  onClick={() => signIn("google")}
+>
+  <img
+    src="https://www.svgrepo.com/show/475656/google-color.svg"
+    style={{ width: 18, height: 18 }}
+  />
+  Login with Google
+</button>
                             </div>
 
                             {/* DISCORD + CREDIT */}
