@@ -332,10 +332,10 @@ document.documentElement.style.overflowX = "hidden";
                               >
                                 Login
                               </button>
-                              <button
-  type="button"
-  className="btn btn-primary grow-button"
-  style={{
+                              //<button
+  //type="button"
+  //className="btn btn-primary grow-button"
+  //style={{
     width: "100%",
     height: 42,
     marginTop: 10,
@@ -347,11 +347,11 @@ document.documentElement.style.overflowX = "hidden";
     justifyContent: "center",
     gap: 8,
   }}
-  onClick={() => signIn("google")}
->
-  <img
-    src="https://www.svgrepo.com/show/475656/google-color.svg"
-    style={{ width: 18, height: 18 }}
+  //onClick={() => signIn("google")}
+//>
+  //<img
+    //src="https://www.svgrepo.com/show/475656/google-color.svg"
+    //style={{ width: 18, height: 18 }}
   />
   Login with Google
 </button>
