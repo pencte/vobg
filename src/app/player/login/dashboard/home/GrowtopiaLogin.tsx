@@ -8,6 +8,8 @@ const GrowtopiaLogin: React.FC = () => {
   const loginFormRef = useRef<HTMLFormElement>(null);
   const guestFormRef = useRef<HTMLFormElement>(null);
 
+  const [screen, setScreen] = useState<"menu" | "growid">("menu");
+
   const [growId, setGrowId] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -16,147 +18,103 @@ const GrowtopiaLogin: React.FC = () => {
 
   useEffect(() => {
     setGrowId(localStorage.getItem("growId") || "");
-  }, []);
-
-  useEffect(() => {
-    document.title = "Growtopia Login";
 
     const style = document.createElement("style");
     style.innerHTML = `
       body {
         margin: 0;
         font-family: Arial, sans-serif;
-        overflow: hidden;
-        background: linear-gradient(to bottom, #4fc3ff 0%, #b3e5ff 40%, #e0f7ff 100%);
+        background: linear-gradient(180deg, #0b1220, #111827);
       }
 
-      /* ☁️ clouds effect */
-      body::before {
-        content: "";
-        position: fixed;
-        width: 200%;
-        height: 200%;
-        background-image: radial-gradient(white 10%, transparent 11%);
-        background-size: 80px 80px;
-        opacity: 0.2;
-        animation: moveClouds 60s linear infinite;
-      }
-
-      @keyframes moveClouds {
-        from { transform: translateX(0); }
-        to { transform: translateX(-400px); }
-      }
-
-      .modal {
-        display: flex !important;
+      .wrap {
+        height: 100vh;
+        display: flex;
         align-items: center;
         justify-content: center;
       }
 
-      .modal-dialog {
-        width: 100%;
-        max-width: 420px;
-      }
-
-      .modal-content {
-        background: #2b2b2b;
-        border: 6px solid #1a1a1a;
-        border-radius: 10px;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-      }
-
-      .modal-body {
-        padding: 20px;
+      .card {
+        width: 360px;
+        background: #111827;
+        border: 1px solid #1f2937;
+        border-radius: 14px;
+        padding: 22px;
+        color: white;
       }
 
       .title {
         text-align: center;
-        font-size: 28px;
-        font-weight: 900;
-        color: #fff;
-        text-shadow: 2px 2px 0 #000;
-        margin-bottom: 10px;
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 18px;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        border: none;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+
+      .google {
+        background: white;
+        color: black;
+      }
+
+      .growid {
+        background: #22c55e;
+        color: black;
+      }
+
+      .back {
+        background: transparent;
+        border: 1px solid #374151;
+        color: white;
       }
 
       .label {
         font-size: 12px;
-        color: #fff;
-        margin: 6px 0;
+        color: #9ca3af;
+        margin: 8px 0 4px;
         display: block;
-        text-shadow: 1px 1px 0 #000;
       }
 
       .input {
         width: 100%;
         padding: 10px;
-        border: 3px solid #000;
-        border-radius: 6px;
-        background: #fff;
-        font-weight: bold;
+        border-radius: 8px;
+        border: 1px solid #374151;
+        background: #0b1220;
+        color: white;
+        outline: none;
       }
 
       .input:focus {
-        outline: none;
-        border-color: #00c2ff;
-      }
-
-      .btn {
-        width: 100%;
-        padding: 10px;
-        border: 3px solid #000;
-        border-radius: 6px;
-        font-weight: 900;
-        cursor: pointer;
-        text-transform: uppercase;
-      }
-
-      .btn-login {
-        background: linear-gradient(#00e5ff, #0099ff);
-        color: white;
-      }
-
-      .btn-login:hover {
-        filter: brightness(1.1);
-      }
-
-      .btn-register {
-        background: linear-gradient(#7CFF6B, #3DDC84);
-        color: black;
-      }
-
-      .row {
-        display: flex;
-        gap: 10px;
-        margin-top: 10px;
-      }
-
-      .eye {
-        position: absolute;
-        right: 10px;
-        top: 35px;
-        cursor: pointer;
+        border-color: #3b82f6;
       }
 
       .pass-wrap {
         position: relative;
       }
 
-      a {
-        color: #00e5ff;
-        font-weight: bold;
-        text-decoration: none;
+      .eye {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        cursor: pointer;
+        color: #9ca3af;
       }
 
-      a:hover {
-        text-decoration: underline;
+      .row {
+        display: flex;
+        gap: 10px;
+        margin-top: 12px;
       }
 
-      .footer {
-        text-align: center;
-        margin-top: 10px;
-        font-size: 11px;
-        color: #ccc;
-      }
     `;
     document.head.appendChild(style);
 
@@ -178,13 +136,31 @@ const GrowtopiaLogin: React.FC = () => {
   };
 
   return (
-    <div className="modal">
-      <div className="modal-dialog">
-        <div className="modal-content">
+    <div className="wrap">
+      <div className="card">
 
-          <div className="modal-body">
+        {/* ================= MENU ================= */}
+        {screen === "menu" && (
+          <>
+            <div className="title">TerorismePS</div>
 
-            <div className="title">Growtopia</div>
+            <button className="btn google">
+              Login Google
+            </button>
+
+            <button
+              className="btn growid"
+              onClick={() => setScreen("growid")}
+            >
+              Login GrowID
+            </button>
+          </>
+        )}
+
+        {/* ================= GROWID LOGIN ================= */}
+        {screen === "growid" && (
+          <>
+            <div className="title">Login GrowID</div>
 
             <form ref={loginFormRef} onSubmit={handleLoginSubmit}>
               <input name="_token" type="hidden" value={token} />
@@ -204,38 +180,32 @@ const GrowtopiaLogin: React.FC = () => {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter Password"
+                  placeholder="Password"
                 />
                 <span className="eye" onClick={() => setShowPassword(!showPassword)}>
-                  👁️
+                  👁
                 </span>
               </div>
             </form>
 
             <div className="row">
-              <form ref={guestFormRef} onSubmit={handleGuestSubmit} style={{ flex: 1 }}>
-                <input name="_token" type="hidden" value={token} />
-                <input name="growId" type="hidden" value="" />
-                <input name="password" type="hidden" value="" />
-
-                <button className="btn btn-register">Register</button>
-              </form>
+              <button
+                className="btn back"
+                onClick={() => setScreen("menu")}
+              >
+                Back
+              </button>
 
               <button
-                className="btn btn-login"
-                style={{ flex: 1 }}
+                className="btn growid"
                 onClick={() => loginFormRef.current?.requestSubmit()}
               >
                 Login
               </button>
             </div>
+          </>
+        )}
 
-            <div className="footer">
-              © Growtopia Style UI Clone (inspired)
-            </div>
-
-          </div>
-        </div>
       </div>
     </div>
   );
