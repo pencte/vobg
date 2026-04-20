@@ -24,14 +24,14 @@ const handler = NextAuth({
   },
 
   callbacks: {
-    // 🔥 LOGIN + AUTO REGISTER (GTPS LOGIC)
+    // 🔥 LOGIN + REGISTER LOGIC
     async signIn({ user, account }) {
       const googleId = account?.providerAccountId;
       const email = user.email;
 
       if (!googleId) return false;
 
-      // cek user di supabase
+      // cek apakah sudah ada akun
       const { data: existing } = await supabase
         .from("users")
         .select("*")
@@ -39,10 +39,12 @@ const handler = NextAuth({
         .single();
 
       let growId: string;
+      let isNewUser = false;
 
       if (!existing) {
-        // 🟢 AUTO REGISTER (SAMA KAYA REGISTER BUTTON)
+        // 🟢 USER BARU → AUTO REGISTER
         growId = generateGrowID(email || "");
+        isNewUser = true;
 
         await supabase.from("users").insert([
           {
@@ -52,19 +54,21 @@ const handler = NextAuth({
           },
         ]);
       } else {
-        // 🔵 AUTO LOGIN
+        // 🔵 USER LAMA → LOGIN
         growId = existing.grow_id;
       }
 
       (user as any).growId = growId;
+      (user as any).isNewUser = isNewUser;
 
       return true;
     },
 
-    // 🔐 SIMPAN KE JWT TOKEN
+    // 🔐 SIMPAN KE JWT
     async jwt({ token, user }) {
       if (user) {
         token.growId = (user as any).growId;
+        token.isNewUser = (user as any).isNewUser;
       }
       return token;
     },
@@ -72,12 +76,19 @@ const handler = NextAuth({
     // 📦 KIRIM KE FRONTEND
     async session({ session, token }) {
       (session.user as any).growId = token.growId;
+      (session.user as any).isNewUser = token.isNewUser;
       return session;
     },
 
-    // 🚀 REDIRECT SETELAH LOGIN
-    async redirect() {
-      return "/player/growid/login/dashboard";
+    // 🚀 REDIRECT LOGIC (INI PENTING)
+    async redirect({ baseUrl, token }: any) {
+      // 🟢 USER BARU → ke register/bind page
+      if (token?.isNewUser) {
+        return `${baseUrl}/player/growid/login/validate`;
+      }
+
+      // 🔵 USER LAMA → dashboard
+      return `${baseUrl}/player/growid/login/dashboard`;
     },
   },
 });
